@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Horode Agency</title>
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* custom fade-in animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(1rem);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="bg-black text-white antialiased">
+  <!-- navbar -->
+  <header class="fixed w-full bg-black bg-opacity-75 backdrop-blur-sm z-20">
+    <nav class="max-w-6xl mx-auto flex items-center justify-between py-4 px-6">
+      <div class="text-xl font-bold">HORODE</div>
+      <ul class="flex space-x-8">
+        <li><a href="#home" class="hover:underline">Home</a></li>
+        <li><a href="#services" class="hover:underline">Our Services</a></li>
+        <li><a href="#portfolio" class="hover:underline">Portfolio</a></li>
+        <li><a href="#contact" class="hover:underline">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- hero -->
+  <section id="home" class="h-screen flex flex-col justify-center items-center text-center px-6">
+    <h1 class="text-5xl md:text-7xl font-extrabold leading-tight">We Build Brands That Lead.</h1>
+    <p class="mt-6 text-lg max-w-2xl">
+      Horode is a strategic design and digital agency helping ambitious businesses build clarity, authority, and long-term growth.
+    </p>
+    <div class="mt-8 flex space-x-6">
+      <a href="#portfolio" class="px-8 py-3 bg-white text-black font-semibold rounded">View Our Work</a>
+      <a href="#contact" class="self-center text-gray-400 hover:text-gray-200">Work With Us</a>
+    </div>
+  </section>
+
+  <!-- who we are -->
+  <section id="who" class="max-w-6xl mx-auto py-20 px-6 fade-in">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <h2 class="text-3xl font-bold">Who We Are</h2>
+      <div class="space-y-6 text-lg">
+        <p>We help brands find clarity through strategic positioning and thoughtful design systems.</p>
+        <p>Our work balances aesthetics with performance, crafting digital experiences that drive growth.</p>
+        <p>From identities to interfaces, we build with purpose and intent.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- services -->
+  <section id="services" class="max-w-6xl mx-auto py-20 px-6">
+    <h2 class="text-3xl font-bold text-center">Our Services</h2>
+    <div class="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+      <!-- service card template -->
+      <div class="p-6 border border-gray-800 rounded hover:border-gray-600 transition fade-in">
+        <h3 class="text-xl font-semibold">Brand Strategy</h3>
+        <p class="mt-2 text-gray-400">Research-driven roadmaps for memorable brands.</p>
+      </div>
+      <div class="p-6 border border-gray-800 rounded hover:border-gray-600 transition fade-in">
+        <h3 class="text-xl font-semibold">Visual Identity Design</h3>
+        <p class="mt-2 text-gray-400">Distinctive systems that speak clearly and consistently.</p>
+      </div>
+      <div class="p-6 border border-gray-800 rounded hover:border-gray-600 transition fade-in">
+        <h3 class="text-xl font-semibold">Website Design & Development</h3>
+        <p class="mt-2 text-gray-400">Purpose-built sites that perform across devices.</p>
+      </div>
+      <div class="p-6 border border-gray-800 rounded hover:border-gray-600 transition fade-in">
+        <h3 class="text-xl font-semibold">Product Design (UI/UX)</h3>
+        <p class="mt-2 text-gray-400">Interfaces people enjoy using and understand instantly.</p>
+      </div>
+      <div class="p-6 border border-gray-800 rounded hover:border-gray-600 transition fade-in">
+        <h3 class="text-xl font-semibold">Brand Systems</h3>
+        <p class="mt-2 text-gray-400">Scalable assets that keep teams aligned and efficient.</p>
+      </div>
+      <div class="p-6 border border-gray-800 rounded hover:border-gray-600 transition fade-in">
+        <h3 class="text-xl font-semibold">Creative Direction</h3>
+        <p class="mt-2 text-gray-400">Concepts that translate ideas into impactful realities.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- portfolio -->
+  <section id="portfolio" class="max-w-6xl mx-auto py-20 px-6">
+    <h2 class="text-3xl font-bold text-center">Selected Work</h2>
+    <div class="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="p-4 border border-gray-800 rounded hover:scale-105 transition fade-in">
+        <h3 class="font-semibold">Project One</h3>
+        <p class="text-gray-400">Tech / Platform redesign</p>
+      </div>
+      <div class="p-4 border border-gray-800 rounded hover:scale-105 transition fade-in">
+        <h3 class="font-semibold">Project Two</h3>
+        <p class="text-gray-400">Consumer goods identity</p>
+      </div>
+      <div class="p-4 border border-gray-800 rounded hover:scale-105 transition fade-in">
+        <h3 class="font-semibold">Project Three</h3>
+        <p class="text-gray-400">SaaS product experience</p>
+      </div>
+      <div class="p-4 border border-gray-800 rounded hover:scale-105 transition fade-in">
+        <h3 class="font-semibold">Project Four</h3>
+        <p class="text-gray-400">Corporate branding overhaul</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- process -->
+  <section id="process" class="max-w-6xl mx-auto py-20 px-6">
+    <h2 class="text-3xl font-bold text-center">Our Process</h2>
+    <div class="mt-12 flex flex-col sm:flex-row justify-between space-y-8 sm:space-y-0">
+      <div class="text-center">
+        <h3 class="font-semibold">Discover</h3>
+        <p class="text-gray-400">Research and insight gathering.</p>
+      </div>
+      <div class="text-center">
+        <h3 class="font-semibold">Define</h3>
+        <p class="text-gray-400">Clarify strategy and direction.</p>
+      </div>
+      <div class="text-center">
+        <h3 class="font-semibold">Design</h3>
+        <p class="text-gray-400">Craft visual and digital solutions.</p>
+      </div>
+      <div class="text-center">
+        <h3 class="font-semibold">Deploy</h3>
+        <p class="text-gray-400">Launch and iterate with purpose.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- contact -->
+  <section id="contact" class="max-w-6xl mx-auto py-20 px-6 fade-in">
+    <h2 class="text-3xl font-bold text-center">Let's Build Something Remarkable.</h2>
+    <p class="mt-4 text-center text-lg">Reach out and let's explore how we can work together.</p>
+    <form class="mt-8 max-w-xl mx-auto space-y-6">
+      <input type="text" placeholder="Name" class="w-full p-3 bg-gray-900 border border-gray-700 rounded" />
+      <input type="email" placeholder="Email" class="w-full p-3 bg-gray-900 border border-gray-700 rounded" />
+      <input type="text" placeholder="Company" class="w-full p-3 bg-gray-900 border border-gray-700 rounded" />
+      <textarea placeholder="Message" class="w-full p-3 bg-gray-900 border border-gray-700 rounded h-32"></textarea>
+      <button type="submit" class="px-6 py-3 bg-white text-black font-semibold rounded">Send Message</button>
+    </form>
+  </section>
+
+  <!-- footer -->
+  <footer class="bg-black py-12 px-6">
+    <div class="max-w-6xl mx-auto text-center space-y-6">
+      <div class="font-bold text-xl">HORODE</div>
+      <p class="text-gray-400">Strategic design and digital experiences built for growth.</p>
+      <nav class="space-x-4">
+        <a href="#home" class="text-gray-400 hover:underline">Home</a>
+        <a href="#services" class="text-gray-400 hover:underline">Services</a>
+        <a href="#portfolio" class="text-gray-400 hover:underline">Portfolio</a>
+        <a href="#contact" class="text-gray-400 hover:underline">Contact</a>
+      </nav>
+      <div class="space-x-4 text-gray-500">
+        <span>IG</span><span>TW</span><span>LI</span>
+      </div>
+      <p class="text-gray-600 text-sm">© 2026 Horode. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // simple intersection observer for fade-in
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // sticky navbar
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('bg-opacity-100', 'shadow-md');
+      } else {
+        header.classList.remove('bg-opacity-100', 'shadow-md');
+      }
+    });
+  </script>
+</body>
+</html>
