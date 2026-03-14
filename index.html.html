@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Horode | Tech Services</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --black:   #000000;
+    --dark:    #111111;
+    --white:   #ffffff;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Satoshi', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ── Cursor ────────────────────────────────── */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--white);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform .15s ease;
+  }
+  .cursor-ring {
+    width: 38px; height: 38px;
+    border: 1px solid var(--white);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    opacity: .35;
+  }
+
+  /* ── Header ────────────────────────────────── */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    padding: 22px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0,0,0,.88);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,.07);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  nav { display: flex; gap: 36px; align-items: center; }
+  nav a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: .45;
+    transition: opacity .2s;
+  }
+  nav a:hover { opacity: 1; }
+
+  /* hamburger */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: none;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px; height: 1px;
+    background: var(--white);
+    transition: transform .3s, opacity .3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    top: 69px; left: 0; right: 0;
+    background: var(--black);
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    padding: 32px 6%;
+    flex-direction: column;
+    gap: 28px;
+    z-index: 190;
+  }
+  .mobile-nav.open { display: flex; }
+  .mobile-nav a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: .5;
+    transition: opacity .2s;
+  }
+  .mobile-nav a:hover { opacity: 1; }
+
+  /* ── Hero ──────────────────────────────────── */
+  .hero {
+    min-height: 100svh;
+    padding: 130px 6% 90px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .hero-eyebrow {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.32);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 36px; height: 1px;
+    background: rgba(255,255,255,.32);
+  }
+
+  .hero h1 {
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 900;
+    font-size: clamp(52px, 7.5vw, 100px);
+    line-height: .9;
+    letter-spacing: 2px;
+    margin-bottom: 32px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 900;
+    font-size: .92em;
+    color: rgba(255,255,255,.55);
+  }
+
+  .hero p {
+    font-size: 12px;
+    line-height: 2;
+    color: rgba(255,255,255,.4);
+    max-width: 380px;
+    margin-bottom: 48px;
+  }
+
+  .cta-group { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+
+  .btn-fill {
+    display: inline-block;
+    padding: 15px 38px;
+    background: var(--white);
+    color: var(--black);
+    text-decoration: none;
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    transition: background .25s, color .25s;
+  }
+  .btn-fill:hover { background: var(--dark); color: var(--white); }
+
+  .btn-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255,255,255,.38);
+    text-decoration: none;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    transition: color .2s;
+  }
+  .btn-line .arr { transition: transform .2s; }
+  .btn-line:hover { color: var(--white); }
+  .btn-line:hover .arr { transform: translateX(5px); }
+
+  /* Stats */
+  .hero-stats { display: flex; flex-direction: column; gap: 1px; }
+
+  .stat-item {
+    background: var(--dark);
+    padding: 28px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border: 1px solid transparent;
+    transition: border-color .3s;
+    cursor: default;
+  }
+  .stat-item:hover { border-color: rgba(255,255,255,.16); }
+
+  .stat-num {
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 900;
+    font-size: 56px;
+    line-height: 1;
+    color: var(--white);
+  }
+  .stat-sup { font-size: 18px; color: rgba(255,255,255,.4); vertical-align: super; }
+
+  .stat-label {
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.28);
+    text-align: right;
+    line-height: 1.7;
+  }
+
+  /* ── Ticker ────────────────────────────────── */
+  .ticker-track {
+    overflow: hidden;
+    border-top: 1px solid rgba(255,255,255,.07);
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    padding: 14px 0;
+    white-space: nowrap;
+  }
+  .ticker-inner { display: inline-flex; animation: scroll-t 22s linear infinite; }
+  .ticker-inner span {
+    font-size: 10px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.25);
+    padding: 0 40px;
+  }
+  .ticker-inner span::before { content: '◆'; margin-right: 40px; font-size: 7px; }
+  @keyframes scroll-t {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── Section shared ────────────────────────── */
+  .section-tag {
+    font-size: 9px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.28);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .section-tag::before {
+    content: '';
+    display: block;
+    width: 28px; height: 1px;
+    background: rgba(255,255,255,.28);
+  }
+
+  /* ── About ─────────────────────────────────── */
+  .about {
+    padding: 120px 6%;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 80px;
+    align-items: start;
+    border-top: 1px solid rgba(255,255,255,.06);
+  }
+
+  .about-index {
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 900;
+    font-size: 130px;
+    line-height: 1;
+    color: rgba(255,255,255,.04);
+    user-select: none;
+    position: sticky;
+    top: 100px;
+  }
+
+  .about-body h2 {
+    font-family: 'Satoshi', sans-serif;
+    font-size: clamp(30px, 4vw, 52px);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 28px;
+  }
+  .about-body h2 strong { font-weight: 900; }
+  .about-body p {
+    font-size: 12px;
+    line-height: 2.1;
+    color: rgba(255,255,255,.4);
+    max-width: 560px;
+  }
+
+  /* ── Services ──────────────────────────────── */
+  .services {
+    padding: 120px 6%;
+    border-top: 1px solid rgba(255,255,255,.06);
+  }
+
+  .services-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 64px;
+  }
+
+  .services-head h2 {
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 900;
+    font-size: clamp(50px, 8vw, 108px);
+    line-height: .95;
+    letter-spacing: -1px;
+  }
+  .services-head h2 em {
+    font-style: italic;
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 900;
+    font-size: .85em;
+    color: rgba(255,255,255,.4);
+  }
+
+  .service-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 1px;
+    background: rgba(255,255,255,.06);
+  }
+
+  .service-card {
+    background: var(--black);
+    padding: 52px 40px 44px;
+    position: relative;
+    overflow: hidden;
+    transition: background .35s;
+  }
+  .service-card::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: 0;
+    height: 1px; width: 0;
+    background: var(--white);
+    transition: width .4s ease;
+  }
+  .service-card:hover { background: var(--dark); }
+  .service-card:hover::after { width: 100%; }
+
+  .card-n {
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 900;
+    font-size: 72px;
+    line-height: 1;
+    color: rgba(255,255,255,.05);
+    margin-bottom: 28px;
+    transition: color .3s;
+  }
+  .service-card:hover .card-n { color: rgba(255,255,255,.1); }
+
+  .service-card h3 {
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: .3px;
+    margin-bottom: 16px;
+  }
+
+  .service-card p {
+    font-size: 11px;
+    line-height: 1.95;
+    color: rgba(255,255,255,.38);
+  }
+
+  .card-cta {
+    display: inline-block;
+    margin-top: 28px;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.45);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .3s, transform .3s;
+  }
+  .service-card:hover .card-cta { opacity: 1; transform: translateY(0); }
+
+  /* ── CTA Band ──────────────────────────────── */
+  .cta-band {
+    background: var(--white);
+    color: var(--black);
+    padding: 100px 6%;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .cta-band h2 {
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 900;
+    font-size: clamp(46px, 7vw, 96px);
+    line-height: .95;
+    letter-spacing: -1px;
+  }
+  .cta-band h2 em {
+    font-style: italic;
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 900;
+    font-size: .85em;
+    color: rgba(0,0,0,.38);
+  }
+
+  .cta-right { text-align: right; }
+  .cta-right p {
+    font-size: 11px;
+    line-height: 1.9;
+    color: rgba(0,0,0,.42);
+    margin-bottom: 28px;
+  }
+
+  .btn-inv {
+    display: inline-block;
+    padding: 15px 38px;
+    background: var(--black);
+    color: var(--white);
+    text-decoration: none;
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    transition: background .25s;
+  }
+  .btn-inv:hover { background: var(--dark); }
+
+  /* ── Contact ───────────────────────────────── */
+  .contact {
+    padding: 120px 6%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    border-top: 1px solid rgba(255,255,255,.06);
+  }
+
+  .contact-info h2 {
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 900;
+    font-size: clamp(46px, 6vw, 84px);
+    line-height: .95;
+    letter-spacing: -1px;
+    margin-bottom: 22px;
+  }
+  .contact-info h2 em {
+    font-style: italic;
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 900;
+    font-size: .87em;
+    color: rgba(255,255,255,.42);
+  }
+
+  .contact-info p {
+    font-size: 11px;
+    line-height: 2;
+    color: rgba(255,255,255,.36);
+    max-width: 340px;
+    margin-bottom: 52px;
+  }
+
+  .detail-list { display: flex; flex-direction: column; gap: 14px; }
+  .detail-item {
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.3);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .detail-item::before {
+    content: '';
+    display: block;
+    width: 22px; height: 1px;
+    background: rgba(255,255,255,.22);
+    flex-shrink: 0;
+  }
+
+  /* Form */
+  form { display: flex; flex-direction: column; gap: 2px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+
+  input, textarea {
+    background: var(--dark);
+    border: 1px solid transparent;
+    outline: none;
+    padding: 17px 20px;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 13px;
+    color: var(--white);
+    transition: border-color .25s, background .25s;
+    width: 100%;
+  }
+  input::placeholder, textarea::placeholder {
+    color: rgba(255,255,255,.2);
+    text-transform: uppercase;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+  }
+  input:focus, textarea:focus {
+    border-color: rgba(255,255,255,.18);
+    background: #1a1a1a;
+  }
+  textarea { resize: none; min-height: 140px; }
+
+  .form-btn {
+    background: var(--white);
+    color: var(--black);
+    border: none;
+    padding: 19px;
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    cursor: none;
+    transition: background .25s, color .25s;
+    margin-top: 2px;
+  }
+  .form-btn:hover { background: var(--dark); color: var(--white); }
+
+  /* ── Footer ────────────────────────────────── */
+  footer {
+    background: var(--dark);
+    border-top: 1px solid rgba(255,255,255,.06);
+    padding: 28px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-logo {
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: 6px;
+    color: var(--white);
+  }
+
+  .footer-copy {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.2);
+  }
+
+  /* ── Reveal ────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity .75s ease, transform .75s ease;
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* ── Responsive ────────────────────────────── */
+  @media (max-width: 900px) {
+    nav { display: none; }
+    .hamburger { display: flex; }
+
+    .hero {
+      grid-template-columns: 1fr;
+      padding: 110px 5% 70px;
+      gap: 48px;
+    }
+
+    .about {
+      grid-template-columns: 1fr;
+      padding: 80px 5%;
+      gap: 0;
+    }
+    .about-index { display: none; }
+
+    .services { padding: 80px 5%; }
+    .services-head { flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 44px; }
+    .service-grid { grid-template-columns: 1fr; }
+
+    .cta-band { grid-template-columns: 1fr; padding: 80px 5%; gap: 36px; }
+    .cta-right { text-align: left; }
+
+    .contact { grid-template-columns: 1fr; padding: 80px 5%; gap: 56px; }
+    .form-row { grid-template-columns: 1fr; }
+
+    footer { flex-direction: column; text-align: center; padding: 24px 5%; }
+  }
+
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 52px; }
+    .cta-group { flex-direction: column; align-items: flex-start; }
+    .service-card { padding: 36px 28px 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<!-- Header -->
+<header>
+  <a class="logo" href="#">
+    <svg width="120" height="28" viewBox="0 0 502 115" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M159.633 92.3993H146.24V10.7236H159.743V45.1942C163.146 39.9248 169.513 36.5217 177.307 36.5217C190.7 36.5217 197.726 44.9747 197.726 59.0264V92.3993H184.333V62.21C184.333 53.0983 179.832 48.7071 173.026 48.7071C164.573 48.7071 159.633 54.6352 159.633 62.7589V92.3993Z" fill="white"/>
+      <path d="M207.701 65.174C207.701 48.268 219.887 36.6314 236.683 36.6314C253.479 36.6314 265.665 48.268 265.665 65.174C265.665 82.08 253.479 93.7166 236.683 93.7166C219.887 93.7166 207.701 82.08 207.701 65.174ZM221.094 65.174C221.094 75.0542 227.462 81.7507 236.683 81.7507C245.905 81.7507 252.272 75.0542 252.272 65.174C252.272 55.2939 245.905 48.5974 236.683 48.5974C227.462 48.5974 221.094 55.2939 221.094 65.174Z" fill="white"/>
+      <path d="M310.312 37.9488V50.3538H305.372C295.712 50.3538 289.674 55.5135 289.674 66.0523V92.3993H276.281V38.2781H288.905L289.674 46.1822C291.979 40.803 297.139 37.1803 304.384 37.1803C306.251 37.1803 308.117 37.3999 310.312 37.9488Z" fill="white"/>
+      <path d="M314.372 65.174C314.372 48.268 326.557 36.6314 343.353 36.6314C360.15 36.6314 372.335 48.268 372.335 65.174C372.335 82.08 360.15 93.7166 343.353 93.7166C326.557 93.7166 314.372 82.08 314.372 65.174ZM327.765 65.174C327.765 75.0542 334.132 81.7507 343.353 81.7507C352.575 81.7507 358.942 75.0542 358.942 65.174C358.942 55.2939 352.575 48.5974 343.353 48.5974C334.132 48.5974 327.765 55.2939 327.765 65.174Z" fill="white"/>
+      <path d="M405.236 93.8264C389.538 93.8264 379.767 82.2996 379.767 65.5034C379.767 48.5974 389.648 36.5217 406.005 36.5217C413.579 36.5217 420.276 39.7053 423.679 45.0844V10.7236H436.962V92.3993H424.667L423.789 83.9463C420.496 90.2037 413.47 93.8264 405.236 93.8264ZM408.2 81.5311C417.531 81.5311 423.569 74.8346 423.569 65.0642C423.569 55.2939 417.531 48.4876 408.2 48.4876C398.869 48.4876 393.161 55.4037 393.161 65.0642C393.161 74.7248 398.869 81.5311 408.2 81.5311Z" fill="white"/>
+      <path d="M475.181 93.8264C459.043 93.8264 447.736 82.08 447.736 65.2838C447.736 48.268 458.824 36.5217 474.742 36.5217C490.989 36.5217 501.308 47.3898 501.308 64.2958V68.3576L460.471 68.4674C461.459 78.0182 466.508 82.8485 475.401 82.8485C482.756 82.8485 487.586 79.9942 489.123 74.8346H501.528C499.223 86.6907 489.342 93.8264 475.181 93.8264ZM474.852 47.4996C466.948 47.4996 462.117 51.781 460.8 59.9046H488.025C488.025 52.4396 482.866 47.4996 474.852 47.4996Z" fill="white"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M57.1767 0C88.7545 0 114.353 25.5989 114.353 57.1767C114.353 88.7544 88.7545 114.353 57.1767 114.353C25.5989 114.353 0 88.7544 0 57.1767C0 25.5989 25.5989 0 57.1767 0ZM26.9329 26.4898V70.0771L47.1833 88.3022V26.4898H26.9329ZM67.3371 52.6231C67.3371 52.6231 53.9013 76.3768 47.1833 88.3022L67.3371 66.316V88.3022H87.5875V52.6231H67.3371Z" fill="white"/>
+    </svg>
+  </a>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <button class="hamburger" id="ham" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="#about"    onclick="closeMenu()">About</a>
+  <a href="#services" onclick="closeMenu()">Services</a>
+  <a href="#contact"  onclick="closeMenu()">Contact</a>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="reveal">
+    <h1>Built For<br><em>Businesses</em><br>That Refuse<br>To Stay Small</h1>
+    <p>We are not just another design agency. We partner with business to see they standout and grow  infrastructure.</p>
+    <div class="cta-group">
+      <a href="#contact" class="btn-fill">Start Your Project</a>
+      <a href="#services" class="btn-line">Our Services <span class="arr">→</span></a>
+    </div>
+  </div>
+
+  <div class="hero-stats reveal" style="transition-delay:.18s">
+    <div class="stat-item">
+      <div class="stat-num">3<span class="stat-sup">+</span></div>
+      <div class="stat-label">Core<br>Services</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">100<span class="stat-sup">%</span></div>
+      <div class="stat-label">Custom<br>Builds</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Scale<br>Potential</div>
+    </div>
+  </div>
+</section>
+
+<!-- Ticker -->
+<div class="ticker-track">
+  <div class="ticker-inner">
+    <span>Branding</span><span>Software Development</span><span>SEO Systems</span>
+    <span>Brand Strategy</span><span>Web Applications</span><span>Digital Presence</span>
+    <span>Mobile Apps</span><span>Identity Design</span>
+    <span>Branding</span><span>Software Development</span><span>SEO Systems</span>
+    <span>Brand Strategy</span><span>Web Applications</span><span>Digital Presence</span>
+    <span>Mobile Apps</span><span>Identity Design</span>
+  </div>
+</div>
+
+<!-- About -->
+<section id="about" class="about">
+  <div class="about-index">01</div>
+  <div class="about-body reveal">
+    <div class="section-tag">Who We Are</div>
+    <h2>We Build <strong>Systems,</strong><br>Not Just Sites</h2>
+    <p>Horode builds digital foundations that help businesses grow with intention. From brand strategy and identity design to custom software and app development, every system we build is engineered to make your company visible, trusted, and infinitely scalable.</p>
+  </div>
+</section>
+
+<!-- Services -->
+<section id="services" class="services">
+  <div class="services-head reveal">
+    <div>
+      <div class="section-tag">What We Do</div>
+      <h2>Our<br><em>Services</em></h2>
+    </div>
+  </div>
+
+  <div class="service-grid">
+    <div class="service-card reveal">
+      <div class="card-n">01</div>
+      <h3>Branding &amp; Strategy</h3>
+      <p>We craft brand identities and positioning systems that make your business clear, premium, and impossible to ignore. Every visual, every word — intentional.</p>
+      <span class="card-cta">Explore →</span>
+    </div>
+    <div class="service-card reveal" style="transition-delay:.1s">
+      <div class="card-n">02</div>
+      <h3>Software &amp; App Dev</h3>
+      <p>We design and build scalable websites, web apps, and mobile applications tailored precisely to your business goals. Performance-obsessed, user-obsessed.</p>
+      <span class="card-cta">Explore →</span>
+    </div>
+    <div class="service-card reveal" style="transition-delay:.2s">
+      <div class="card-n">03</div>
+      <h3>SEO &amp; Visibility</h3>
+      <p>We optimize your digital presence so your business ranks, gets discovered, and attracts the right customers — consistently and compoundingly.</p>
+      <span class="card-cta">Explore →</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Band -->
+<div class="cta-band reveal">
+  <h2>Ready To<br><em>Scale</em> Your<br>Business?</h2>
+  <div class="cta-right">
+    <p>Let's build something<br>powerful together.</p>
+    <a href="#contact" class="btn-inv">Work With Us</a>
+  </div>
+</div>
+
+<!-- Contact -->
+<section id="contact" class="contact">
+  <div class="contact-info reveal">
+    <div class="section-tag">Get In Touch</div>
+    <h2>Let's Build<br><em>Together</em></h2>
+    <p>Tell us about your project and we'll come back with a plan to make it extraordinary.</p>
+    <div class="detail-list">
+      <div class="detail-item">Horode Tech Services</div>
+      <div class="detail-item">Port Harcourt, Nigeria</div>
+      <div class="detail-item">hello@horode.com</div>
+    </div>
+  </div>
+
+  <div class="reveal" style="transition-delay:.15s">
+    <form onsubmit="return false">
+      <div class="form-row">
+        <input type="text"  placeholder="Your Name"     required />
+        <input type="email" placeholder="Email Address" required />
+      </div>
+      <input type="text" placeholder="Company (Optional)" />
+      <textarea placeholder="Tell us about your project" rows="5"></textarea>
+      <button type="submit" class="form-btn">Send Message</button>
+    </form>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">
+    <svg width="100" height="23" viewBox="0 0 502 115" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M159.633 92.3993H146.24V10.7236H159.743V45.1942C163.146 39.9248 169.513 36.5217 177.307 36.5217C190.7 36.5217 197.726 44.9747 197.726 59.0264V92.3993H184.333V62.21C184.333 53.0983 179.832 48.7071 173.026 48.7071C164.573 48.7071 159.633 54.6352 159.633 62.7589V92.3993Z" fill="white"/>
+      <path d="M207.701 65.174C207.701 48.268 219.887 36.6314 236.683 36.6314C253.479 36.6314 265.665 48.268 265.665 65.174C265.665 82.08 253.479 93.7166 236.683 93.7166C219.887 93.7166 207.701 82.08 207.701 65.174ZM221.094 65.174C221.094 75.0542 227.462 81.7507 236.683 81.7507C245.905 81.7507 252.272 75.0542 252.272 65.174C252.272 55.2939 245.905 48.5974 236.683 48.5974C227.462 48.5974 221.094 55.2939 221.094 65.174Z" fill="white"/>
+      <path d="M310.312 37.9488V50.3538H305.372C295.712 50.3538 289.674 55.5135 289.674 66.0523V92.3993H276.281V38.2781H288.905L289.674 46.1822C291.979 40.803 297.139 37.1803 304.384 37.1803C306.251 37.1803 308.117 37.3999 310.312 37.9488Z" fill="white"/>
+      <path d="M314.372 65.174C314.372 48.268 326.557 36.6314 343.353 36.6314C360.15 36.6314 372.335 48.268 372.335 65.174C372.335 82.08 360.15 93.7166 343.353 93.7166C326.557 93.7166 314.372 82.08 314.372 65.174ZM327.765 65.174C327.765 75.0542 334.132 81.7507 343.353 81.7507C352.575 81.7507 358.942 75.0542 358.942 65.174C358.942 55.2939 352.575 48.5974 343.353 48.5974C334.132 48.5974 327.765 55.2939 327.765 65.174Z" fill="white"/>
+      <path d="M405.236 93.8264C389.538 93.8264 379.767 82.2996 379.767 65.5034C379.767 48.5974 389.648 36.5217 406.005 36.5217C413.579 36.5217 420.276 39.7053 423.679 45.0844V10.7236H436.962V92.3993H424.667L423.789 83.9463C420.496 90.2037 413.47 93.8264 405.236 93.8264ZM408.2 81.5311C417.531 81.5311 423.569 74.8346 423.569 65.0642C423.569 55.2939 417.531 48.4876 408.2 48.4876C398.869 48.4876 393.161 55.4037 393.161 65.0642C393.161 74.7248 398.869 81.5311 408.2 81.5311Z" fill="white"/>
+      <path d="M475.181 93.8264C459.043 93.8264 447.736 82.08 447.736 65.2838C447.736 48.268 458.824 36.5217 474.742 36.5217C490.989 36.5217 501.308 47.3898 501.308 64.2958V68.3576L460.471 68.4674C461.459 78.0182 466.508 82.8485 475.401 82.8485C482.756 82.8485 487.586 79.9942 489.123 74.8346H501.528C499.223 86.6907 489.342 93.8264 475.181 93.8264ZM474.852 47.4996C466.948 47.4996 462.117 51.781 460.8 59.9046H488.025C488.025 52.4396 482.866 47.4996 474.852 47.4996Z" fill="white"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M57.1767 0C88.7545 0 114.353 25.5989 114.353 57.1767C114.353 88.7544 88.7545 114.353 57.1767 114.353C25.5989 114.353 0 88.7544 0 57.1767C0 25.5989 25.5989 0 57.1767 0ZM26.9329 26.4898V70.0771L47.1833 88.3022V26.4898H26.9329ZM67.3371 52.6231C67.3371 52.6231 53.9013 76.3768 47.1833 88.3022L67.3371 66.316V88.3022H87.5875V52.6231H67.3371Z" fill="white"/>
+    </svg>
+  </div>
+  <div class="footer-copy">© 2026 Horode Tech Services. All Rights Reserved.</div>
+</footer>
+
+<script>
+  /* Cursor */
+  const cur = document.getElementById('cur');
+  const ring = document.getElementById('ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cur.style.left = mx + 'px';
+    cur.style.top  = my + 'px';
+  });
+  (function animRing() {
+    rx += (mx - rx) * .13;
+    ry += (my - ry) * .13;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(animRing);
+  })();
+
+  /* Hamburger */
+  const ham  = document.getElementById('ham');
+  const mNav = document.getElementById('mobileNav');
+  ham.addEventListener('click', () => {
+    ham.classList.toggle('open');
+    mNav.classList.toggle('open');
+  });
+  function closeMenu() {
+    ham.classList.remove('open');
+    mNav.classList.remove('open');
+  }
+
+  /* Scroll reveal */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: .1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
