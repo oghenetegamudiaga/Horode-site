@@ -1,0 +1,219 @@
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #fefefe;
+  --fg: #111111;
+  --muted: #6b6b6b;
+  --border: #e5e5e5;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: 'Satoshi', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #111111;
+  font-family: 'Satoshi', sans-serif;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* Tega CTA Button */
+.tega-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1.5px solid #111111;
+  border-radius: 9999px;
+  background: transparent;
+  color: #111111;
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: color 0.5s ease;
+  text-decoration: none;
+}
+
+.tega-btn:hover {
+  color: #ffffff;
+}
+
+.tega-btn .tega-fill {
+  position: absolute;
+  inset: 0;
+  background: #111111;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(100%);
+  transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  font-family: 'Satoshi', sans-serif;
+  white-space: nowrap;
+  padding: inherit;
+}
+
+.tega-btn:hover .tega-fill {
+  transform: translateY(0);
+}
+
+/* Nav hover slide effect */
+.nav-link {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.nav-link span {
+  display: block;
+  transition: transform 0.35s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.nav-link .nav-clone {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  transform: translateY(0);
+  transition: transform 0.35s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.nav-link:hover span:first-child {
+  transform: translateY(-100%);
+}
+
+.nav-link:hover .nav-clone {
+  transform: translateY(-100%);
+}
+
+/* Mobile menu */
+.mobile-menu {
+  transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.4s ease;
+}
+
+/* Section spacing */
+.section {
+  padding: 6rem 0;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 4rem 0;
+  }
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1320px;
+  }
+}
+
+/* Work card */
+.work-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #f0f0f0;
+  aspect-ratio: 16/10;
+  cursor: pointer;
+}
+
+.work-card .card-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(17,17,17,0.0);
+  transition: background 0.4s ease;
+  display: flex;
+  align-items: flex-end;
+  padding: 1.5rem;
+}
+
+.work-card:hover .card-overlay {
+  background: rgba(17,17,17,0.55);
+}
+
+.work-card .card-info {
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.work-card:hover .card-info {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Form inputs */
+.form-input {
+  width: 100%;
+  border: none;
+  border-bottom: 1.5px solid #e5e5e5;
+  background: transparent;
+  padding: 1rem 0;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 1rem;
+  color: #111111;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form-input::placeholder {
+  color: #aaa;
+}
+
+.form-input:focus {
+  border-bottom-color: #111111;
+}
+
+/* Blog card */
+.blog-card {
+  border-top: 1.5px solid #e5e5e5;
+  padding: 2rem 0;
+  transition: background 0.2s;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fefefe;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
